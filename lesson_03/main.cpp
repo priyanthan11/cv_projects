@@ -20,8 +20,20 @@ int main()
 
   // Crop
   cv::Rect roi(3700, 2200, 500, 500); // x,y,width,height
+
+  // Clamp the ROI to image bondaries
+  roi &= cv::Rect(0,0,image.cols,image.rows);
+
+  if(roi.empty())
+  {
+    std::cout << "Error: Invalid ROI." << std::endl;
+    return -1;
+  }
+
   cv::Mat cropped = image(roi);
 
+  std::cout << "Clamped ROI: " << roi.x << ", " << roi.y 
+          << ", " << roi.width << ", " << roi.height << std::endl;
   // Display
   cv::imshow("Original" ,image);
   cv::imshow("Resized" ,resized);
